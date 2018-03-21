@@ -4,6 +4,29 @@ import "./CardForge.sol";
 
 contract CardCore is CardForge {
 
+  // This is the CORE of ProjectEther. The breakdown of each contracts
+  // functionality is as follows:
+  //
+  // - CardBase: This contract stores the fundamental instruments necessary to
+  // run ProjectEther. Included are storage elements and basic functionality of
+  // cards.
+  //
+  // - CardBattle:
+  //
+  // - CardForge: This contract contains all the advanced functionality and
+  // permission related elements. Included are features for card packs, sale of
+  // card packs, and admin perms.
+  //
+  // - CardMarketplace:
+  //
+  // - CardMaster: This file manages all the creator and admin permissions and
+  // constraints for child contract functions.
+  //
+  // - CardOwnership: This provides the methods required for basic non-fungible
+  // token transactions, following the draft ERC-721 spec.
+  // (https://github.com/ethereum/EIPs/issues/721)
+
+
   address public newContractAddress;
 
   function CardCore() public {
@@ -23,7 +46,7 @@ contract CardCore is CardForge {
     external
     view
     returns (
-    uint256 stats,
+    uint256 cardId,
     uint256 experience,
     uint256 generation
   ){

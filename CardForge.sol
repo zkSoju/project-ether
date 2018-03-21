@@ -6,49 +6,55 @@ contract CardForge is CardOwnership {
 
   uint entryFee;
   uint16 currentGeneration;
-  uint32[] stats;
+  uint32[] cardId;
 
-  bool deckSale = false;
+  bool cardSale = false;
 
   function drawFirstCard() public {
     require(ownerCardCount[msg.sender] == 0);
     _drawCard(_calculateStat(), currentGeneration, msg.sender);
   }
 
-  function drawDeck() public payable {
-    require(enableDeckSale == true);
+  function drawPremiumCard() public payable {
+    require(cardSale == true);
     require(msg.value == entryFee);
-    for (uint x = 0; x < 20; x ++) {
-      _drawCard(_calculateStat(), currentGeneration, msg.sender);
-    }
+    _drawCard(_selectCard(), currentGeneration, msg.sender);
   }
 
-  function _calculateStat(uint _index) private view returns (uint){
-    // Implement random number generation to select a random card from database
-    return stats[_index];
+
+  function _selectCard() private view returns (uint){
+    return cardId[_index];
   }
 
-  function enableDeckSale() public onlyCreator {
-    deckSale = true;
+  // @dev Enable the ability to purchase card(s).
+  function enableCardSale() public onlyCreator {
+    cardSale = true;
   }
 
-  function disableDeckSale() public onlyCreator {
-    deckSale = false;
+  // @dev Disable the ability to purchase card(s).
+  function disableCardSale() public onlyCreator {
+    cardSale = false;
   }
 
+  // @dev Adjust price required to draw one card from a "pack".
   function setEntryFee(uint _entryFee) public onlyCreator whenPaused {
     entryFee = _entryFee;
   }
 
+  // @dev Sets the the generation of the current set of cards.
   function setCurrentGeneration(uint16 _currentGeneration) public onlyCreator {
     currentGeneration = _currentGeneration;
   }
 
-  function setCardDeck(uint32[] _stats) public onlyCreator {
-    stats = _stats;
+  // @dev Replace current set of cards for sale with new ones. Old cards still available just not for sale.
+  // Utilize this when creating new "expansions".
+  function rotateCards(uint32[] _cardIds) public onlyCreator {
+    cardId = _cardIds;
+    currentGeneration ++;
   }
 
-  function addCard(uint32 _stats) public onlyCreator {
-    stats.push(_stats);
+  // @dev Add singular cards to the current deck for promotional purposes or special events.
+  function addCard(uint32 _cardId) public onlyCreator {
+    cardId.push(_cardId);
   }
 }

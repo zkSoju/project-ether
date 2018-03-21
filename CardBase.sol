@@ -12,9 +12,9 @@ contract CardBase is CardMaster {
   event Transfer(address from, address to, uint256 tokenId);
 
   struct Card {
-    // The Card's statistics is all public!
-    // [00] Attack [00] Health [00] Special
-    uint32 stats;
+    // The Card's statistics is all public on our official page!
+    // [00] will be associated with a specific card in our card forgery.
+    uint32 cardId;
 
     // After winning a certain number of battles against tougher foes,
     // the card gains experience and unlocks the ability to forge stronger cards
@@ -34,7 +34,7 @@ contract CardBase is CardMaster {
   // ownership count.
   mapping (address => uint) ownerCardCount;
 
-  // @dev A mapping from card IDs to the address that owns them. All cards
+  // @dev A mapping from card ID in the card array to the address that owns them. All cards
   // have an owner.
   mapping (uint => address) cardToOwner;
 
@@ -47,19 +47,16 @@ contract CardBase is CardMaster {
     Transfer(_from, _to, _tokenId);
   }
 
-  function _drawCard(uint32 _stats, uint256 _generation, address _owner) internal returns (uint) {
+  function _drawCard(uint32 _cardID, uint256 _generation, address _owner) internal returns (uint) {
     Card memory _card = Card({
-      stats: uint32(_stats),
+      card: uint32(_stats),
       experience: 0,
       generation: uint16(_generation)
       });
 
     uint id = cards.push(_card).sub(1);
-
     DrawCard(_owner, _card.stats, _card.experience, _card.generation);
-
     _transfer(0, _owner, id);
-
     return id;
   }
 }
