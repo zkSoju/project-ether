@@ -10,7 +10,7 @@ contract CardOwnership is CardBase, ERC721 {
 
   // @notice Name and symbol of the non fungible token.
   string public constant name = "ProjectEther";
-  string public constant symbol = "ProE";
+  string public constant symbol = "PE";
 
   mapping (uint => address) cardApprovals;
 
@@ -49,21 +49,21 @@ contract CardOwnership is CardBase, ERC721 {
   // @dev Required for ERC-721 compliance.
   function takeOwnership(uint256 _tokenId) external whenNotPaused {
     // Safety check against a 0x0 address input.
-    require(_to != address(0));
+    require(msg.sender != address(0));
     // Requires that the user has to own the card to transfer it.
     require(cardApprovals[_tokenId] == msg.sender);
     address owner = ownerOf(_tokenId);
     _transfer(owner, msg.sender, _tokenId);
   }
 
-  // @notice Returns number of cards crafted since the beginning of the CryptoVerse.
+  // @notice Returns number of cards crafted since the beginning of the ProjectEther.
   // @dev Required for ERC-721 compliance
   function totalSupply() public view returns (uint) {
     return cards.length - 1;
   }
 
   // Withdraw a specified amount from the contract to the creator address.
-  function withdrawBalance(uint _amount) external onlyCreator return(bool){
+  function withdrawBalance(uint _amount) external onlyCreator returns(bool){
     if(this.balance < _amount || _amount == 0){
       return false;
     }

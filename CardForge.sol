@@ -1,6 +1,6 @@
 pragma solidity ^0.4.19;
 
-import "./CardOwnership.sol";
+import "./CardNFT.sol";
 
 contract CardForge is CardOwnership {
 
@@ -12,7 +12,7 @@ contract CardForge is CardOwnership {
 
   function drawFirstCard() public {
     require(ownerCardCount[msg.sender] == 0);
-    _drawCard(_calculateStat(), currentGeneration, msg.sender);
+    _drawCard(_selectCard(), currentGeneration, msg.sender);
   }
 
   function drawPremiumCard() public payable {
@@ -23,7 +23,7 @@ contract CardForge is CardOwnership {
 
 
   function _selectCard() private view returns (uint){
-    return cardId[_index];
+    return cardId[1];
   }
 
   // @dev Enable the ability to purchase card(s).

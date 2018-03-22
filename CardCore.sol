@@ -7,6 +7,9 @@ contract CardCore is CardForge {
   // This is the CORE of ProjectEther. The breakdown of each contracts
   // functionality is as follows:
   //
+  // Libraries utilized: SafeMath
+  // (https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/contracts/math/SafeMath.sol)
+  //
   // - CardBase: This contract stores the fundamental instruments necessary to
   // run ProjectEther. Included are storage elements and basic functionality of
   // cards.
@@ -47,14 +50,14 @@ contract CardCore is CardForge {
     view
     returns (
     uint256 cardId,
-    uint256 experience,
-    uint256 generation
+    uint256 value,
+    uint256 rarity
   ){
     Card storage cardTemp = cards[_id];
 
-    stats = uint256(cardTemp.stats);
-    experience = uint256(cardTemp.experience);
-    generation = uint256(cardTemp.generation);
+    cardId = uint256(cardTemp.cardId);
+    value = uint256(cardTemp.value);
+    rarity = uint256(cardTemp.rarity);
   }
 
   function unpause() public onlyCreator whenPaused {
