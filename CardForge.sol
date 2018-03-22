@@ -11,19 +11,27 @@ contract CardForge is CardOwnership {
   bool cardSale = false;
 
   function drawFirstCard() public {
+    uint32 id;
+    uint32 value;
+    uint8 rarity;
+    (id, value, rarity) = _selectCard();
     require(ownerCardCount[msg.sender] == 0);
-    _drawCard(_selectCard(), currentGeneration, msg.sender);
+    _drawCard(id, value, rarity, msg.sender);
   }
 
   function drawPremiumCard() public payable {
     require(cardSale == true);
     require(msg.value == entryFee);
-    _drawCard(_selectCard(), currentGeneration, msg.sender);
+    uint32 id;
+    uint32 value;
+    uint8 rarity;
+    (id, value, rarity) = _selectCard();
+    _drawCard(id, value, rarity, msg.sender);
   }
 
 
-  function _selectCard() private view returns (uint){
-    return cardId[1];
+  function _selectCard() private view returns (uint32 id, uint32 value,  uint8 rarity){
+    return (0, 0, 0);
   }
 
   // @dev Enable the ability to purchase card(s).
